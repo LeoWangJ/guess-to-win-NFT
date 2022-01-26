@@ -8,21 +8,17 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract NFT is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenId;
-    uint private MAX_SUPPLY = 10;
-    address contractAddress;
+    uint256 private MAX_SUPPLY = 10;
 
+    constructor() ERC721("leowang", "LEO") {}
 
-    constructor(address guessAddress) ERC721('leowang', 'LEO') {
-        contractAddress = guessAddress;
-    }
-    
-    function mint(string memory tokenURI) external returns(uint){
-        require(_tokenId < MAX_SUPPLY, "is mint upper limit"); 
+    function mint(string memory tokenURI) internal returns (uint256) {
+        uint256 currentId = _tokenId.current();
+        require(currentId < MAX_SUPPLY, "is mint upper limit");
         _tokenId.increment();
-        uint newItemId = _tokenId.current();
+        uint256 newItemId = _tokenId.current();
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
-        setApprovalForAll(contractAddress, true);
         return newItemId;
     }
 }
