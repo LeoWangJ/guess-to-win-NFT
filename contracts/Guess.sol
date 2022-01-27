@@ -11,6 +11,7 @@ import "./NFT.sol";
 contract Guess is ReentrancyGuard, NFT, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenSold;
+    Counters.Counter private _nftSold;
 
     uint256 mintPrice = 0.08 ether;
     address payable owner;
@@ -20,9 +21,8 @@ contract Guess is ReentrancyGuard, NFT, Ownable {
 
     struct AwardItem {
         uint256 itemId;
-        uint256 nftAddress;
         address payable owner;
-        uint256 tokenId;
+        bool sold;
     }
 
     struct GuessItem {
@@ -32,6 +32,7 @@ contract Guess is ReentrancyGuard, NFT, Ownable {
     }
 
     mapping(uint256 => GuessItem) private idToGuessItem;
+    mapping(uint256 => AwardItem) private idToAwardItem;
 
     constructor(string memory _initBaseURI) {
         owner = payable(msg.sender);
@@ -58,7 +59,9 @@ contract Guess is ReentrancyGuard, NFT, Ownable {
         private
         nonReentrant
     {
-        super.mint(tokenId);
+        uint newNftId = super.mint(tokenId);
+        _nftSold.increment();
+        idToAwardItem[newNftId] = AwardItem(newNftId,payable(msg.sender),true);
     }
 
     function getMiniPrice() public view returns (uint256) {
@@ -82,12 +85,17 @@ contract Guess is ReentrancyGuard, NFT, Ownable {
     {
         require(msg.value == mintPrice, "Price must to equal to mintPrice");
         require(0 < itemId && itemId < 50, "itemId is not valid");
+
         bool isMinted = hasBeenMinted(itemId);
         require(!isMinted, "itemId was be choose!");
+
         _tokenSold.increment();
         uint256 newSoldId = _tokenSold.current();
+        require(newSoldId <= 50, 'only 50 guess times');
+
+
         bool canGetAward = true;
-        idToGuessItem[newSoldId] = GuessItem(itemId, canGetAward, msg.sender);
+        idToGuessItem[newSoldId] = GuessItem(itemId, canGetAward, payable(msg.sender));
         _mintToken(nftContract, itemId);
     }
 
@@ -98,5 +106,15 @@ contract Guess is ReentrancyGuard, NFT, Ownable {
             if (currentId == itemId) return true;
         }
         return false;
+    }
+
+    function getAllSoldAwardNFT() public view returns (AwardItem[] memory){
+        uint nftsold = _nftSold.current();
+        AwardItem[] memory items = new AwardItem[](nftsold);
+        for(uint i = 0; i < nftsold; i++){
+            AwardItem storage currentItem = idToAwardItem[i];
+            items[i] = currentItem;
+        }
+        return items;
     }
 }
