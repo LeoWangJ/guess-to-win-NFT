@@ -1,7 +1,7 @@
-export default function Home() {
+export default function GuessToWin() {
   return (
     <div>
-      home
+      GuessToWin
     </div>
   )
 }
