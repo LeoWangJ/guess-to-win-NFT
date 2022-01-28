@@ -1,10 +1,10 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Menu from './components/menu'
 import AllNFT from './pages/allNFT'
 import MyGuessList from './pages/myGuessList'
 import MyNFT from './pages/myNFT'
 import GuessToWin from './pages'
-import Menu from './components/menu'
 function App() {
   return (
     <div className="App">

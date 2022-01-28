@@ -59,7 +59,7 @@ contract Guess is ReentrancyGuard, NFT, Ownable {
         private
         nonReentrant
     {
-        uint newNftId = super.mint(tokenId);
+        uint newNftId = super.mint("");
         _nftSold.increment();
         idToAwardItem[newNftId] = AwardItem(newNftId,payable(msg.sender),true);
     }
