@@ -1,0 +1,14 @@
+.item {
+  width: 60px;
+  height: 60px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  border: 1px solid #bfbfbf;
+  margin: 1px;
+  cursor: pointer;
+}
+.item.guessed {
+  cursor: not-allowed;
+  background-color: darkgray;
+}

@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Menu from './components/menu'
@@ -15,6 +16,7 @@ function App() {
           <Route path="/myGuessList" element={<MyGuessList />} />
           <Route path="/myNFT" element={<MyNFT />} />
           <Route path="/" element={<GuessToWin />} />
+          <Route path="/callback" element={<GuessToWin />} />
         </Routes>
       </Router>
     </div>

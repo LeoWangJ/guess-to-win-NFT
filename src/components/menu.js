@@ -1,39 +1,42 @@
+import React from 'react';
 import { Menu } from 'antd'
 import { Link } from 'react-router-dom'
 import web3modal from './wallet/web3modal'
 import { ethers } from 'ethers'
-
+import { USER } from '../contexts/user'
 import { TrophyOutlined, FolderOutlined, SettingOutlined,ProfileOutlined,WalletOutlined } from '@ant-design/icons'
-import { useState } from 'react'
-const { SubMenu } = Menu
+
+
 export default function MenuTab(){
-  const [address, setAddress] = useState("")
+  const { user, provider, setUser, setProvider,setSigner } = USER()
 
   async function Wallet(){
     const connection = await web3modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)
     const signer = provider.getSigner()
     const address = await signer.getAddress()
-    console.log(signer)
-
-    setAddress(address)
-    return provider
+    setProvider(provider)
+    setSigner(signer)
+    setUser(address)
   }
+  
 
   return (
-    <Menu mode="horizontal">
-      <Menu.Item key="mail" icon={<TrophyOutlined />}>
+    <Menu mode="horizontal" style={{marginBottom:'10px'}}>
+      <Menu.Item key="guessToWin" icon={<TrophyOutlined />}>
         <Link to="/">Guess to win NFT</Link>
       </Menu.Item>
-      <Menu.Item key="app" disabled icon={<FolderOutlined />}>
+      <Menu.Item key="allNFT" icon={<FolderOutlined />}>
         <Link to="/allNFT">ALL NFT</Link>
       </Menu.Item>
-      <SubMenu key="SubMenu" icon={<SettingOutlined />} title="profile">
-          <Menu.Item key="setting:1" icon={<ProfileOutlined />}> <Link to="/myNFT">My NFT</Link></Menu.Item>
-          <Menu.Item key="setting:2" icon={<ProfileOutlined />}><Link to="/myGuessList">My Guess List</Link></Menu.Item>
-      </SubMenu>
+      <Menu.Item key="myNFT" icon={<ProfileOutlined />}>
+        <Link to="/myNFT">My NFT</Link>
+      </Menu.Item>
+      <Menu.Item key="myGuessList" icon={<ProfileOutlined />}>
+        <Link to="/myGuessList">My Guess List</Link>
+      </Menu.Item>
       <Menu.Item key="alipay" icon={<WalletOutlined />} onClick={()=> Wallet()}>
-        {address || `Wallet` } 
+        {user || `Wallet` } 
       </Menu.Item>
     </Menu>
   );

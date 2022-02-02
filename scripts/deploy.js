@@ -1,14 +1,14 @@
 const hre = require("hardhat");
 const fs = require('fs');
-
+const path = require('path');
 async function main() {
   const Guess = await hre.ethers.getContractFactory("Guess");
   const guess = await Guess.deploy();
 
   await guess.deployed();
-
+  const NFTJSON = 'https://infura-ipfs.io/ipfs/QmWphErXKTtjxAcSu66ARarmt5yd8z1tPSkGMZqHCmT7Pm/'
   const NFT = await hre.ethers.getContractFactory("NFT");
-  const nft = await NFT.deploy();
+  const nft = await NFT.deploy(NFTJSON);
 
   await nft.deployed();
 
@@ -19,8 +19,10 @@ async function main() {
   let config = `
     export const guessAddress = '${guess.address}'
     export const nftAddress = '${nft.address}'
+    export const nftJSON = '${NFTJSON}'
   `
-  fs.writeFileSync('../src/web3/contract.js',config)
+  console.log(__dirname)
+  fs.writeFileSync(path.resolve(__dirname,'../src/web3/contract.js'),config)
 }
 
 main()
