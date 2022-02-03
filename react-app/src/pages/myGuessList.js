@@ -25,10 +25,11 @@ export default function MyGuessList() {
     }
   ]
   const [dataSource,setDataSource] = useState([])
-  const { user,provider,signer, setUser, setProvider,setSigner  } = USER()
+  const { signer, setUser, setProvider,setSigner  } = USER()
   
   useEffect(()=>{
     getMyGuessList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
 

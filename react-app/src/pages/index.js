@@ -11,7 +11,7 @@ import '../css/index.css'
 const ALL_GUESS = 50
 
 export default function GuessToWin() {
-  const { user,provider,signer, setUser, setProvider,setSigner  } = USER()
+  const { signer, setUser, setProvider,setSigner  } = USER()
   const [guessList, setGuessList] = useState([])
   const [list, setList] = useState([])
 
@@ -27,6 +27,7 @@ export default function GuessToWin() {
 
   useEffect(() => {
     getAllGuessNumber()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function getAllGuessNumber(){
@@ -79,7 +80,7 @@ export default function GuessToWin() {
   function showWinNFTModal(data){
     Modal.success({
       title: `Congratulation get winner NFT - ${data.name}`,
-      content: <img  src={data.image} style={{width:`240px`}}/>
+      content: <img alt="pic" src={data.image} style={{width:`240px`}}/>
     });
   }
 

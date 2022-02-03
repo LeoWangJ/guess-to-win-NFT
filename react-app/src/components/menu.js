@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 import web3modal from './wallet/web3modal'
 import { ethers } from 'ethers'
 import { USER } from '../contexts/user'
-import { TrophyOutlined, FolderOutlined, SettingOutlined,ProfileOutlined,WalletOutlined } from '@ant-design/icons'
+import { TrophyOutlined, FolderOutlined,ProfileOutlined,WalletOutlined } from '@ant-design/icons'
 
 
 export default function MenuTab(){
-  const { user, provider, setUser, setProvider,setSigner } = USER()
+  const { user, setUser, setProvider,setSigner } = USER()
 
   async function Wallet(){
     const connection = await web3modal.connect()

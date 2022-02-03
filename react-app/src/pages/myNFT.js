@@ -10,11 +10,12 @@ import axios from 'axios'
 const { Meta } = Card;
 
 export default function MyNFT() {
-  const { user,provider,signer, setUser, setProvider,setSigner  } = USER()
+  const { signer, setUser, setProvider,setSigner  } = USER()
   const [NFTList, setNFTList] = useState([])
 
   useEffect(() => {
     getMyNFTList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function Wallet(){
