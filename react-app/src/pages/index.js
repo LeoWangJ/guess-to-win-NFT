@@ -31,7 +31,7 @@ export default function GuessToWin() {
   }, []);
 
   async function getAllGuessNumber(){
-      const customProvider = new ethers.providers.JsonRpcBatchProvider('https://rpc-mumbai.maticvigil.com')
+      const customProvider = new ethers.providers.JsonRpcBatchProvider('https://rpc-mainnet.maticvigil.com')
       const GuessContract = new ethers.Contract(guessAddress,Guess.abi,customProvider)
       
       let list = await GuessContract.getAllGuess()

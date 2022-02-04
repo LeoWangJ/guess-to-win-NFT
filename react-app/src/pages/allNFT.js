@@ -15,7 +15,7 @@ export default function MyNFT() {
   }, []);
 
   async function getAllNFTList(){
-    const provider = new ethers.providers.JsonRpcBatchProvider('https://rpc-mumbai.maticvigil.com')
+    const provider = new ethers.providers.JsonRpcBatchProvider('https://rpc-mainnet.maticvigil.com')
     const NFTContract = new ethers.Contract(nftAddress,NFT.abi,provider);
     let soldList = await NFTContract.getAllSoldNFT()
     soldList = soldList.map(i=>i.itemId.toNumber());
