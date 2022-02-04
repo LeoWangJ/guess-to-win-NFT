@@ -5,7 +5,7 @@ import Web3Modal from 'web3modal'
 // These options are used to construct the UAuthSPA instance.
 export const uauthOptions = {
   clientID: 'LfGrRqj3bYX7SEOQ6B7P4jjx/tQVA7fjEOlD6l0R2LU=',
-  clientSecret: 'MLik1j0eVBMIfLo0kKHdR7ZPiGqNHw1r9i/MK1z9K0o=',
+  clientSecret: 'fBpsXwPXOLuIKYqxdFLZxiqxS+J9dvgDZho4j3MaM+c=',
   redirectUri: 'https://guess-to-win.netlify.app/callback',
 
   // Must include both the openid and wallet scopes.
