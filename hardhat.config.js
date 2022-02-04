@@ -8,6 +8,10 @@ module.exports = {
     hardhat:{
       chainId: 1337
     },
+    polygon:{
+      url: `https://polygon-mainnet.infura.io/v3/${projectId}`,
+      accounts:[account]
+    },
     mumbai:{
       url: `https://polygon-mumbai.infura.io/v3/${projectId}`,
       accounts:[account]

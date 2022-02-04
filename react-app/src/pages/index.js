@@ -31,7 +31,7 @@ export default function GuessToWin() {
   }, []);
 
   async function getAllGuessNumber(){
-      const customProvider = new ethers.providers.JsonRpcBatchProvider()
+      const customProvider = new ethers.providers.JsonRpcBatchProvider('https://rpc-mumbai.maticvigil.com')
       const GuessContract = new ethers.Contract(guessAddress,Guess.abi,customProvider)
       
       let list = await GuessContract.getAllGuess()
@@ -63,6 +63,7 @@ export default function GuessToWin() {
     let trasaction = await GuessContract.guessToWin(id.toString(),{value:price})
     let tx = await trasaction.wait() 
     let event = tx.events[0]
+    console.log(tx,event)
     let isGetAward = event.args.hasAward
     if(isGetAward) {
       const NFTContract = new ethers.Contract(nftAddress,NFT.abi,signer)

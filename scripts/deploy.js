@@ -22,7 +22,7 @@ async function main() {
     export const nftJSON = '${NFTJSON}'
   `
   console.log(__dirname)
-  fs.writeFileSync(path.resolve(__dirname,'../src/web3/contract.js'),config)
+  fs.writeFileSync(path.resolve(__dirname,'../react-app/src/web3/contract.js'),config)
 }
 
 main()
