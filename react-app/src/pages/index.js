@@ -5,7 +5,7 @@ import Guess from '../abi/Guess.json'
 import NFT from '../abi/NFT.json'
 import web3modal from '../components/wallet/web3modal'
 import {ethers} from 'ethers'
-import { Modal } from 'antd';
+import { Modal,Spin,notification } from 'antd';
 import axios from 'axios';
 import '../css/index.css'
 const ALL_GUESS = 50
@@ -14,7 +14,7 @@ export default function GuessToWin() {
   const { signer, setUser, setProvider,setSigner  } = USER()
   const [guessList, setGuessList] = useState([])
   const [list, setList] = useState([])
-
+  const [loading,setLoading] = useState(false)
   async function Wallet(){
     const connection = await web3modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)
@@ -60,12 +60,18 @@ export default function GuessToWin() {
     const GuessContract = new ethers.Contract(guessAddress,Guess.abi,signer)
     let price = await GuessContract.getMiniPrice() 
     price = price.toString()
+    setLoading(true)
     let trasaction = await GuessContract.guessToWin(id.toString(),{value:price})
     let tx = await trasaction.wait() 
-    let event = tx.events[0]
-    console.log(tx,event)
+    let event = tx.events[1]
+    console.log(event)
     let isGetAward = event.args.hasAward
     if(isGetAward) {
+      notification.info({
+        message: 'Congratulation!',
+        description:'You win the NFT! you need to mint it by this transaction',
+        placement:'topLeft'
+      });
       const NFTContract = new ethers.Contract(nftAddress,NFT.abi,signer)
       let transaction = await NFTContract.mint(1)
       let tx = await transaction.wait()
@@ -75,7 +81,9 @@ export default function GuessToWin() {
       let meta = await axios.get(tokenURI)
       showWinNFTModal(meta.data)
     }
+
     getAllGuessNumber()
+    setLoading(false)
   }
 
   function showWinNFTModal(data){
@@ -86,17 +94,19 @@ export default function GuessToWin() {
   }
 
   return (
-    <div style={{display:'flex',flexWrap:'wrap'}}>
-      {
-        list.map((item)=>{
-          return (
-              <div 
-                key={item.id} 
-                className={'item ' + (item.guessed ? 'guessed':'')}
-                onClick={()=> selectGuess(item.id) }
-              >{item.id}</div>)
-        })
-      }
-    </div>
+    <Spin tip="handle guess number transaction..." spinning={loading}>
+      <div style={{display:'flex',flexWrap:'wrap'}}>
+        {
+          list.map((item)=>{
+            return (
+                <div 
+                  key={item.id} 
+                  className={'item ' + (item.guessed ? 'guessed':'')}
+                  onClick={()=> selectGuess(item.id) }
+                >{item.id}</div>)
+          })
+        }
+      </div>
+    </Spin>
   )
 }
